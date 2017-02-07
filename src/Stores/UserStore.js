@@ -1,9 +1,11 @@
 import React from 'react';
-import alt from '../alt';
-import UserActions from '../Actions/UserActions';
-import APIService from '../Services/APIService';
+import { browserHistory } from 'react-router';
 import { notify } from 'react-notify-toast';
 import NProgress from 'nprogress-npm';
+
+import UserActions from '../Actions/UserActions';
+import APIService from '../Services/APIService';
+import alt from '../alt';
 
 class UserStore {
     constructor() {
@@ -19,7 +21,6 @@ class UserStore {
             handleLogout: UserActions.LOGOUT,
             handleSignup: UserActions.SIGNUP,
             submitAnswer: UserActions.SUBMIT_ANSWER,
-            updateLevel: UserActions.UPDATE_USER_CURRENT_LEVEL,
         });
         if(localStorage.getItem('user'))
             this.user = JSON.parse(localStorage.getItem('user'));
@@ -68,39 +69,34 @@ class UserStore {
     handleLogout() {
         localStorage.removeItem('user');
         this.setState({user: null});
-        notify.show("Logout successful", 'success', 2000);
+        notify.show('Logout successful', 'success', 2000);
     }
 
     submitAnswer(data) {
         APIService.submitAnswer(data).then(response => {
             response.json().then(resp => {
-                if(resp.responseCode != 200) {
-                    notify.show(resp.message, "warning", 2000);
+                if(resp.status === 'accepted') {
+                    notify.show('Correct Answer', 'success', 2000);
+                    if(resp.max != this.user.level) {
+                        // This question was first solved
+                        let user = this.user;
+                        user.level = resp.max;
+                        localStorage.setItem('user', JSON.stringify(user));
+                        this.setState({ user: user });
+                    }
+
+                    browserHistory.pushState(this, '/level/' + resp.next);
                 }
                 else {
-                    notify.show("Correct Answer", "success", 2000);
-                    UserActions.updateUserCurrentLevel({level: resp.level, parentLevel: resp.plevel, url: resp.url})
-                    window.location.pathname = '/level/'+ resp.url;
+                    console.log('Incorrect answer');
+                    notify.show('Incorrect answer!', 'warning', 2000);
                 }
                 NProgress.done();
             })
         }).catch(error => {
+            notify.show('Something went wrong', 'warning', 2000);
             NProgress.done();
         });
-    }
-
-    updateLevel(data) {
-        var tempuser = this.user;
-        if(tempuser) {
-            tempuser.level = data.level;
-            tempuser.parentLevel = data.parentLevel;
-            tempuser.levelUrl = data.url;
-            localStorage.setItem('user', JSON.stringify(tempuser));
-            this.setState({level: data.level, parentLevel: data.parentLevel, levelUrl: data.url, user: tempuser});
-        }
-        else {
-            this.setState({level: data.level, parentLevel: data.parentLevel, levelUrl: data.url});
-        }
     }
 
     saveSignupData(data) {

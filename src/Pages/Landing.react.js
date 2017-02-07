@@ -1,9 +1,10 @@
 import React from 'react';
-import {withRouter} from 'react-router';
+import { withRouter } from 'react-router';
 import Notifications, { notify } from 'react-notify-toast';
 import EasyTransition from 'react-easy-transition';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 import AltContainer from 'alt-container';
 import NProgress from 'nprogress-npm';
 
@@ -16,49 +17,63 @@ import Footer from '../Components/Footer.react';
 
 var LandingPage = React.createClass({
 
+    handleServerResponse(resp) {
+        console.log(resp);
+        resp.json().then((body) => {
+            if(resp.status === 200) {
+                UserActions.saveUser(body);
+                this.props.router.push('/dashboard');
+                NProgress.done();
+            }
+            else {
+                this.props.router.push('/signup');
+            }
+
+            NProgress.done();
+        });
+    },
+
+    responseFacebook(response) {
+        if(!response.email) {
+            notify.show('Please allow all the required permissions.', 'warning', 2000);
+        }
+        UserActions.saveSignupData({access_token: response.accessToken, email: response.email});
+        APIService.login({
+            access_token: response.accessToken
+        }).then(this.handleServerResponse).catch((err) => {
+            console.log(err);
+            NProgress.done();
+            notify.show('Please check your internet connection.', 'warning', 2000);
+        });
+    },
+
     responseGoogle(response) {
         console.log(response);
         let idToken = response.Zi.id_token;
         let email = response.profileObj.email;
 
         if(!email) {
-            NProgress.show('Please allow all the required permissions.', 'warning', 2000);
+            notify.show('Please allow all the required permissions.', 'warning', 2000);
             return ;
         }
+        UserActions.saveSignupData({id_token: idToken, email: email});
 
         APIService.login({
             'id_token': idToken
-        }).then((resp) => {
-            console.log(resp);
-                resp.json().then((body) => {
-                    if(resp.status === 200) {
-                        console.log(body);
-                        UserActions.saveUser(body);
-                        console.log('redirecting to dashboard');
-                        this.props.router.push('/dashboard');
-                        NProgress.done();
-                    }
-                    else {
-                        console.log('redirecting to signup');
-                        UserActions.saveSignupData({id_token: idToken, email: email});
-                        this.props.router.push('/signup');
-                    }
-
-                    NProgress.done();
-                })
-        }).catch((err) => {
+        }).then(this.handleServerResponse).catch((err) => {
             console.log(err);
             NProgress.done();
+            notify.show('Please check your internet connection.', 'warning', 2000);
         });
     },
 
     render() {
         return (
             <div>
-                <Notifications />
                 <AltContainer stores = {{ User: UserStore }}>
                     <Sidebar />
                 </AltContainer>
+                <Notifications />
                 <div id="wrapper">
                     <AltContainer stores = {{User: UserStore }}>
                         { this.props.children ? (
@@ -76,10 +91,18 @@ var LandingPage = React.createClass({
                                                     <span className="skills">An online crypt hunt</span><br />
                                                     <GoogleLogin
                                                         clientId="679139204576-92doaqm03ubptl267md0o897rh7s9llu.apps.googleusercontent.com"
-                                                        buttonText="Lets go !!!"
-                                                        className="btn-lg btn-outline"
+                                                        buttonText="Google"
+                                                        className="btn-lg btn-outline g-btn"
                                                         onSuccess={this.responseGoogle}
                                                         onFailure={this.responseGoogle}
+                                                    />
+                                                    <FacebookLogin
+                                                        appId="1171065776241595"
+                                                        autoLoad={false}
+                                                        fields="name,email,picture"
+                                                        callback={this.responseFacebook}
+                                                        cssClass="btn-lg btn-outline fb-btn"
+                                                        textButton="Facebook"
                                                     />
                                                 </div>
                                             </div>
@@ -104,7 +127,7 @@ var LandingPage = React.createClass({
                                                     and that is what we do. We allow you to use any means at your disposal (that includes google) to crack the questions we pose to you,
                                                     with special prizes for cracking some specific questions, BUT there is a catch. Our questions are not straightforward,
                                                     most of them are based on wordplay, cyphers and lateral thinking (among other things).
-                                                    So put on your thinking caps, flex your fingers and get ready for a race to decide who will crack the last question first and will be the winner of Obscura 4.0. Happy hunting!!..
+                                                    So put on your thinking caps, flex your fingers and get ready for a race to decide who will crack the last question first and will be the winner of Obscura 4.0. Happy hunting!
                                                 </p>
                                             </div>
 
@@ -124,11 +147,9 @@ var LandingPage = React.createClass({
                                         <div className="row">
                                             <div className="col-xs-8" style={{ left: "calc(33%/2)" }}>
                                                 <ul>
-                                                    <li><p>All the answers are in lowercase</p></li>
                                                     <li><p>Nothing is obvious at Obscura. So open the flaps and think out of the box.</p></li>
                                                     <li><p>We can help you, if you are polite enough to ask for it. Don't go around pestering us for hints.</p></li>
                                                     <li><p>Googlebaba knows it all</p></li>
-                                                    <li><p>Begin to love surfing. Oh, did we forget to tell we love Wikipedia and tineye.com a lot?</p></li>
                                                     <li><p>Finding the answer is not the final solution.</p></li>
                                                     <li><p>There is no space in any answer</p></li>
                                                 </ul>

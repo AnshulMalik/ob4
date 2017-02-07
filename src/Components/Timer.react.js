@@ -2,7 +2,7 @@ import React from 'react';
 
 var Timer = React.createClass({
     render() {
-        let target_date = new Date("Fri, 10 Feb 2017 06:30:00 GMT");
+        let target_date = new Date("Fri, 10 Feb 2017 11:30:00 GMT");
         setTimeout(function () { getCountdown(); }, 1000);
 
         function getCountdown(){

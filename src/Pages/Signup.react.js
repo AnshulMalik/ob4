@@ -25,7 +25,8 @@ var SignupPage = React.createClass({
             phone: form[2].value,
             college: form[3].value,
             email: this.props.User.signupData.email,
-            id_token: this.props.User.signupData.id_token
+            id_token: this.props.User.signupData.id_token,
+            access_token: this.props.User.signupData.access_token
             };
 
         console.log(data);

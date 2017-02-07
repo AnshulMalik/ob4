@@ -11,7 +11,7 @@ var Footer = React.createClass({
                             <div className="col-lg-12">
                                 <ul className="list-inline">
                                     <li>
-                                        <a href="https://www.facebook.com/arucsbo" target="_blank" className="btn-social btn-outline"><i className="fa fa-fw fa-facebook"></i></a>
+                                        <a href="https://www.facebook.com/obscuranitkkr" target="_blank" className="btn-social btn-outline"><i className="fa fa-fw fa-facebook"></i></a>
                                     </li>
                                     <li>
                                         <a href="https://twitter.com/Obscura_NIT_Kkr" target="_blank" className="btn-social btn-outline"><i className="fa fa-fw fa-twitter"></i></a>

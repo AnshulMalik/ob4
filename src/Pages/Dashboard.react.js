@@ -39,7 +39,6 @@ var Dashboard = React.createClass({
                             <h1>Welcome to Obscura 4.0</h1>
                             <h3>Crypthunt will start in</h3>
                             <br/>
-
                             <Timer />
                         </center>
                     </div>

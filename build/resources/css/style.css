@@ -76,3 +76,31 @@ input {
     background-color: rgb(44, 62, 80) !important;
     color: white !important;
 }
+
+
+.navbar-fixed-bottom, .navbar-fixed-top {
+    z-index: 998;
+}
+
+#submitAnswerBox{
+    width:200px;
+    margin-right:5px;
+}
+.levelImage {
+    max-width: 600px;
+}
+
+.timeline-Widget {
+    color: white;
+    background-color:   rgb(2, 33, 39);
+}
+
+.fb-btn {
+    margin: 0px 2px;
+    background-color: #3b5998;
+}
+
+.g-btn {
+    margin: 0px 2px;
+    background-color: #dd4b39;
+}

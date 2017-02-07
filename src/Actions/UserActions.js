@@ -24,9 +24,6 @@ class UserActions{
     submitAnswer(data) {
         return data;
     }
-    updateUserCurrentLevel(data) {
-        return data;
-    }
 }
 
 module.exports = Alt.createActions(UserActions);
