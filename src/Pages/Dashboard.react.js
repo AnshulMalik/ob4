@@ -20,6 +20,7 @@ var Dashboard = React.createClass({
             levelUrl = '/level/' + this.props.User.user.level;
         }
 
+        let target = new Date('Fri, 10 Feb 2017 11:30:00 GMT');
         return (
             <Transition
                 component={false} // don't use a wrapping component
@@ -39,7 +40,11 @@ var Dashboard = React.createClass({
                             <h1>Welcome to Obscura 4.0</h1>
                             <h3>Crypthunt will start in</h3>
                             <br/>
-                            <Timer />
+                            { ( target.getTime() > Date.now() ) ? (
+                                <Timer target ={target} url={levelUrl}/>
+                            ) : (
+                                <Link to={levelUrl}>Lets go</Link>
+                            )}
                         </center>
                     </div>
                 </section>

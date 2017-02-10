@@ -5,7 +5,7 @@ var path = require('path');
 var WebpackDevMiddleware = require('webpack-dev-middleware');
 var WebpackHotMiddlware = require('webpack-hot-middleware');
 var webpack = require('webpack');
-var config = require('./webpack.config.prod');
+var config = require('./webpack.config.dev');
 var compiler = webpack(config);
 
 var app = express();
@@ -28,7 +28,10 @@ app.use(WebpackHotMiddlware(compiler, {
 
 app.use('/api', function(req, res) {
     var url = "http://localhost:3007"+ req.url;
-    console.log("requesting : " + url);
+    req.pipe(request(url)).pipe(res);
+});
+app.use('/socket.io', function(req, res) {
+    var url = "http://localhost:3007/socket.io"+ req.url;
     req.pipe(request(url)).pipe(res);
 });
 

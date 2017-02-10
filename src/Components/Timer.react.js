@@ -2,7 +2,8 @@ import React from 'react';
 
 var Timer = React.createClass({
     render() {
-        let target_date = new Date("Fri, 10 Feb 2017 11:30:00 GMT");
+        let target = this.props.target;
+        let url = this.props.url;
         setTimeout(function () { getCountdown(); }, 1000);
 
         function getCountdown(){
@@ -12,14 +13,15 @@ var Timer = React.createClass({
                 clockFace: 'DailyCounter',
                 autoStart: false,
                 callbacks: {
-                    stop: function() {
-                        $('.message').html('The clock has stopped!')
+                    interval: function(d) {
+                        if((target.getTime() - Date.now())/1000 <= -1) {
+                            window.location.href = url;
+                        }
                     }
                 }
             });
 
-//            clock.setTime(220880);
-            clock.setTime((target_date - Date.now()) / 1000);
+            clock.setTime((target - Date.now()) / 1000);
             clock.setCountdown(true);
             clock.start();
 

@@ -21,7 +21,7 @@ module.exports =
         <Route path='/logout' component={LogoutPage} />
         <Route path='/login' component={LoginPage}/>
         <Route path='/signup' component={SignupPage}/>
-        <Route path="/encrypt" component={Encrypt} />
+        <Route path="/encrypto" component={Encrypt} />
         <Route path='/leaderboard'component={Leaderboard} />
         <Route path="/credits" component={Credits} />
         <Route path="*" component={PageNotFound} />

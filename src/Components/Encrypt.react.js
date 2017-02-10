@@ -34,22 +34,24 @@ var Encrypt = React.createClass({
                     translateX: 150
                 }}
                 >
-                <center >    
-                    <form onSubmit={this.handle}>
-                        <div style={{width: '50%', display: 'inline-block'}}>
-                            <textarea style={{width: '100%', resize: 'none'}} rows="10" id="encryptedArea" placeholder="Encrypted text goes here" >
-                            </textarea>
-                            <input type='submit' value='Decrypt' />
-                        </div>
-                        <div style={{width: '50%', display: 'inline-block'}}>
-                            <textarea style={{width: '100%', resize: 'none'}} rows="10" id="decryptedArea" placeholder="Decrypted text goes here">
-                            </textarea>
-                            <input type='submit' value='Encrypt'/>
-                        </div>
+                <section key={1} className="wrapper style1 fullscreen fade-up">
+                    <center >
+                        <form onSubmit={this.handle}>
+                            <div style={{width: '50%', display: 'inline-block'}}>
+                                <textarea style={{width: '100%', resize: 'none'}} rows="10" id="encryptedArea" placeholder="Encrypted text goes here" >
+                                </textarea>
+                                <input type='submit' value='Decrypt' />
+                            </div>
+                            <div style={{width: '50%', display: 'inline-block'}}>
+                                <textarea style={{width: '100%', resize: 'none'}} rows="10" id="decryptedArea" placeholder="Decrypted text goes here">
+                                </textarea>
+                                <input type='submit' value='Encrypt'/>
+                            </div>
 
-                        <input type="clear" value='Clear'/>
-                    </form>
-                </center>
+                            <input type="clear" value='Clear'/>
+                        </form>
+                    </center>
+                </section>
             </Transition>
         );
     },

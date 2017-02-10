@@ -85,10 +85,9 @@ class UserStore {
                         this.setState({ user: user });
                     }
 
-                    browserHistory.pushState(this, '/level/' + resp.next);
+                    browserHistory.push('/level/' + resp.next);
                 }
                 else {
-                    console.log('Incorrect answer');
                     notify.show('Incorrect answer!', 'warning', 2000);
                 }
                 NProgress.done();

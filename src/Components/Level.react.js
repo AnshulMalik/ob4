@@ -21,27 +21,37 @@ function disasemble(data) {
 
 var Level = React.createClass({
     shouldComponentUpdate(nextProps, nextState) {
-        console.log('New level: ', nextState.level, this.state.level);
+        //console.log('shouldComponentUpdate');
         if(!this.state.level) {
-            console.log('props updated');
+            // console.log('props updated');
             return true;
         }
-        else if(this.state.level.level == nextProps.params.level){
-            console.log('props not updated');
+        else if(this.state.level.url == nextProps.params.level){
+            // console.log('props not updated');
             return false;
         }
         else {
-            console.log('props updated 1');
+            // console.log('props updated 1');
             return true;
         }
     },
 
     setLevelFromResponseData(response) {
-        console.log('setLevelFromResponseData')
+        //console.log('setLevelFromResponseData');
         response.json().then((data) => {
             if(response.status === 200) {
-                console.log('Setting state');
                 this.setState({level: data});
+
+                if(data.hint.length) {
+                    console.log('hint: ', data.hint);
+                }
+
+                if(data.js.length) {
+                    let js = data.js;
+                    setTimeout(function() {
+                        eval(disasemble(js));
+                    }, 3000);
+                }
             }
             else {
                 notify.show(data.message, 'warning', 2000);
@@ -51,15 +61,24 @@ var Level = React.createClass({
     },
 
     componentWillUpdate(nextProps, nextState) {
-        console.log('componentWillUpdate');
+        //console.log('componentWillUpdate');
         let levelUrl = nextProps.params.level;
-        APIService.getLevelByUrl(levelUrl, this.props.User.user.token).then(this.setLevelFromResponseData).catch(error => {
-            console.log("Something went wrong while fetching level info from server" + error);
-        });
+        if(levelUrl != nextState.level.level) {
+            APIService.getLevelByUrl(levelUrl, this.props.User.user.token).then(this.setLevelFromResponseData).catch(error => {
+                console.log("Something went wrong while fetching level info from server" + error);
+            });
+        }
+    },
+
+    componentDidUpdate() {
+        //console.log('componentDidUpdate');
+        if(typeof twttr === 'object') {
+            twttr.widgets.load();
+        }
     },
 
     getInitialState() {
-        console.log('getInitialState');
+        //console.log('getInitialState');
         let levelUrl = this.props.params.level;
         APIService.getLevelByUrl(levelUrl, this.props.User.user.token).then(this.setLevelFromResponseData).catch(error => {
             console.log("Something went wrong while fetching level info from server" + error);
@@ -68,22 +87,13 @@ var Level = React.createClass({
     },
 
     render() {
+        //console.log('rendering');
         if(!this.state.level) {
+            NProgress.done();
             return null;
         }
         else {
             NProgress.done();
-        }
-        if(this.state.level.hint) {
-            console.log('hint: ', this.state.level.hint);
-        }
-
-        if(this.state.level.js) {
-            const js = this.state.level.js;
-            setTimeout(function() {
-                eval(js);
-            }, 3000);
-
         }
 
         return (
@@ -102,13 +112,12 @@ var Level = React.createClass({
                         }}
                         >
 
-
                             <section key={1} className="wrapper style1 fullscreen fade-up">
                                 <div className="inner level">
                                     <center>
                                         <h3>{this.state.level.name}</h3>
                                         <div dangerouslySetInnerHTML={{__html: this.state.level.html}} />
-                                        <img className="levelImage" id="levimg" src={this.state.level.picture} usemap="#immapid"></img>
+                                        <img className="levelImage" id="levimg" src={this.state.level.picture} useMap={this.state.level.mapId}></img>
                                         {
                                             (this.state.level.level == 26) ? '' : (<form className="levelForm" onSubmit={this.submitAnswer}>
                                                 <input  type="text" placeholder="Answer goes here" id="submitAnswerBox" autoComplete="off"/>
@@ -139,11 +148,6 @@ var Level = React.createClass({
         event.preventDefault();
         let answer = event.target.children[0].value;
         event.target.children[0].value = "";
-        console.log({
-            answer: answer,
-            token: this.props.User.user.token,
-            url: this.props.params.level,
-        });
         UserActions.submitAnswer({
             answer: answer,
             token: this.props.User.user.token,
