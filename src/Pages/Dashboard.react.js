@@ -38,13 +38,8 @@ var Dashboard = React.createClass({
                     <div className="inner">
                         <center>
                             <h1>Welcome to Obscura 4.0</h1>
-                            <h3>Crypthunt will start in</h3>
                             <br/>
-                            { ( target.getTime() > Date.now() ) ? (
-                                <Timer target ={target} url={levelUrl}/>
-                            ) : (
-                                <Link to={levelUrl}>Lets go</Link>
-                            )}
+                            <Link to={levelUrl}>Lets go</Link>
                         </center>
                     </div>
                 </section>

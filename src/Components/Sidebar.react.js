@@ -54,11 +54,16 @@ var Sidebar = React.createClass({
                                 </li>
                             )}
 
+                            <li className="page-scroll">
+                                <Link to='/credits'>Credits</Link>
+                            </li>
+
                             { this.props.User.user ? (
                                 <li className="page-scroll">
                                     <Link to='/logout'>Logout</Link>
                                 </li>
                             ): ''}
+
                         </ul>
                     </div>
                 </div>
