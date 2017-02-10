@@ -172,3 +172,6 @@ ul#lbul {
 #dice:hover {
   cursor: pointer;
 }
+.bcd div {
+  display: inline-block;
+}
