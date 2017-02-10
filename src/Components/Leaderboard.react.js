@@ -15,7 +15,7 @@ const Leaderboard = React.createClass({
                 usersA = data;
 
                 data.forEach((user, i) => {
-                    user.position = i;
+                    user.position = i+1;
                     user.rank = i;
                     users[user._id] = user;
                 });
@@ -99,18 +99,18 @@ const Leaderboard = React.createClass({
             animating = false;
             return ;
         }
-        let aboveId = usersA[i]._id;
-        //console.log(i, users[aboveId].levelId, users[id].levelId);
-        if(users[aboveId].levelId < users[id].levelId ||
-            ((users[aboveId].levelId < users[id].levelId))) {
-        //    console.log('swapping');
+        let aboveId = usersA[i-1]._id;
+        console.log(i);
+        console.log(i, users[aboveId].levelId, users[id].levelId);
+        if(users[aboveId].levelId < users[id].levelId ) {
+            console.log('swapping');
             setTimeout(() => {
                 lis[users[aboveId].position].style.top = (i + 1) * liHeight + 'px';
                 li.style.top = i * liHeight + 'px';
             }, 100);
-            let tempUser = usersA[i];
-            usersA[i] = usersA[i+1];
-            usersA[i+1] = tempUser;
+            let tempUser = usersA[i-1];
+            usersA[i-1] = usersA[i];
+            usersA[i] = tempUser;
             lis[users[id].position].children[0].innerText = i-1;
             lis[users[aboveId].position].children[0].innerText = i;
 
@@ -147,7 +147,7 @@ const Leaderboard = React.createClass({
         lis[users[id].position].children[1].innerText = users[id].levelId;
 
         animating = true;
-        this.animate(startIndex - 1, startIndex, id, lis, li, liHeight);
+        this.animate(startIndex, startIndex+1, id, lis, li, liHeight);
 
     }
 });

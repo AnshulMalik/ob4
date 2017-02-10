@@ -86,6 +86,28 @@ var Level = React.createClass({
         return { level: null };
     },
 
+    getForm() {
+        if(this.state.level.level == 26) return '';
+
+        if(this.state.level.level == 22) {
+            return (
+                <form className="levelForm" onSubmit={this.submitAnswer}>
+                    <input className="form-control submitAnswer" type="text" placeholder="" id="submitAnswerBox1" autoComplete="off"/>
+                    <input className="form-control submitAnswer" type="text" placeholder="" id="submitAnswerBox2" autoComplete="off"/><br />
+                    <button className="btn btn-default" type="submit" id="answerSubmitButton">Submit</button>
+                </form>
+            );
+        }
+        else {
+            return (
+                <form className="levelForm" onSubmit={this.submitAnswer}>
+                    <input className="form-control submitAnswer" type="text" placeholder="Answer goes here" id="submitAnswerBox" autoComplete="off"/>
+                    <button className="btn btn-default" type="submit" id="answerSubmitButton">Submit</button>
+                </form>
+            );
+        }
+    },
+
     render() {
         //console.log('rendering');
         if(!this.state.level) {
@@ -95,6 +117,7 @@ var Level = React.createClass({
         else {
             NProgress.done();
         }
+
 
         return (
             <div className="row">
@@ -119,11 +142,7 @@ var Level = React.createClass({
                                         <div dangerouslySetInnerHTML={{__html: this.state.level.html}} />
                                         <img className="levelImage" id="levimg" src={this.state.level.picture} useMap={this.state.level.mapId}></img>
                                         {
-                                            (this.state.level.level == 26) ? '' : (<form className="levelForm" onSubmit={this.submitAnswer}>
-                                                <input  type="text" placeholder="Answer goes here" id="submitAnswerBox" autoComplete="off"/>
-                                                <button type="submit" id="answerSubmitButton">Submit</button>
-                                                </form>
-                                                )
+                                            this.getForm()
                                         }
 
                                     </center>
@@ -146,7 +165,14 @@ var Level = React.createClass({
 
     submitAnswer(event) {
         event.preventDefault();
-        let answer = event.target.children[0].value;
+        let answer;
+        console.log(event.target.children);
+        if(this.state.level.level == 22)
+            answer = event.target.children[0].value + event.target.children[1].value;
+        else
+            answer = event.target.children[0].value;
+
+        console.log(answer);
         event.target.children[0].value = "";
         UserActions.submitAnswer({
             answer: answer,
