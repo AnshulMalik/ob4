@@ -5,7 +5,7 @@ var path = require('path');
 var WebpackDevMiddleware = require('webpack-dev-middleware');
 var WebpackHotMiddlware = require('webpack-hot-middleware');
 var webpack = require('webpack');
-var config = require('./webpack.config.dev');
+var config = require('./webpack.config.prod');
 var compiler = webpack(config);
 
 var app = express();
