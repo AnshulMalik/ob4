@@ -44,6 +44,14 @@ const Leaderboard = React.createClass({
             li.style.top = i * liHeight + 'px';
         }
         animating = false;
+        this.sort('106966897784124439296', 5); // GoTeam
+        this.sort('9079712821355', 5);         // Rew
+        this.sort('106966897784124439296', 6); // GOTeam
+        this.sort('9079712821355', 6);          //rew
+        this.sort('9079712821355', 7);          //rew
+        this.sort('90797128259355', 7);         //ahul
+        this.sort('106966897784124439296', 7); // GoTeam
+        this.sort('9079712591355', 8);          //Dis
     },
     render() {
         if(!this.state.data) {
@@ -129,6 +137,7 @@ const Leaderboard = React.createClass({
             // console.log('deffering animation, already animating');
             return setTimeout(this.sort.bind(null, id, newLevel), 1000);
         }
+        animating = true;
         let startIndex;
 
         users[id].levelId = newLevel;
@@ -146,7 +155,6 @@ const Leaderboard = React.createClass({
         let li = lis[users[id].position];
         lis[users[id].position].children[1].innerText = users[id].levelId;
 
-        animating = true;
         this.animate(startIndex, startIndex+1, id, lis, li, liHeight);
 
     }
