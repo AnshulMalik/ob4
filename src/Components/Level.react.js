@@ -169,7 +169,7 @@ var Level = React.createClass({
         let answer;
         console.log(event.target.children);
         if(this.state.level.level == 22)
-            answer = event.target.children[0].value + event.target.children[1].value;
+            answer = event.target.children[0].value + '-' + event.target.children[1].value;
         else
             answer = event.target.children[0].value;
 
