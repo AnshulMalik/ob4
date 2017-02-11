@@ -88,7 +88,7 @@ var Level = React.createClass({
     },
 
     getForm() {
-        if(this.state.level.level == 31) return '';
+        if(this.state.level.level == 30) return '';
 
         if(this.state.level.level == 22) {
             return (
