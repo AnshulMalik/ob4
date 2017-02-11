@@ -108,10 +108,8 @@ const Leaderboard = React.createClass({
             return ;
         }
         let aboveId = usersA[i-1]._id;
-        console.log(i);
-        console.log(i, users[aboveId].levelId, users[id].levelId);
         if(users[aboveId].levelId < users[id].levelId ) {
-            console.log('swapping');
+        //    console.log('swapping');
             setTimeout(() => {
                 lis[users[aboveId].position].style.top = (i + 1) * liHeight + 'px';
                 li.style.top = i * liHeight + 'px';

@@ -75,6 +75,7 @@ var Level = React.createClass({
         if(typeof twttr === 'object') {
             twttr.widgets.load();
         }
+        document.title = this.state.level.name;
     },
 
     getInitialState() {
