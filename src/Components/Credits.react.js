@@ -53,7 +53,7 @@ var Credits = React.createClass({
                     <li>
                         <div className="ch-item ch-img-3">
                             <div className="ch-info">
-                                <h3>dRajan nagpal</h3>
+                                <h3>Rajan nagpal</h3>
                                 <p>9646569743</p>
                             </div>
                         </div>
@@ -85,7 +85,7 @@ var Credits = React.createClass({
                     <li>
                         <div className="ch-item ch-img-7">
                             <div className="ch-info">
-                                <h3>jenkins</h3>
+                                <h3>Prasanna</h3>
                                 <p>7056519967</p>
                             </div>
                         </div>

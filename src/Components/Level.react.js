@@ -22,6 +22,7 @@ function disasemble(data) {
 var Level = React.createClass({
     shouldComponentUpdate(nextProps, nextState) {
         //console.log('shouldComponentUpdate');
+
         if(!this.state.level) {
             // console.log('props updated');
             return true;
@@ -61,7 +62,7 @@ var Level = React.createClass({
     },
 
     componentWillUpdate(nextProps, nextState) {
-        //console.log('componentWillUpdate');
+        //console.log('componentWillUpdate')
         let levelUrl = nextProps.params.level;
         if(levelUrl != nextState.level.level) {
             APIService.getLevelByUrl(levelUrl, this.props.User.user.token).then(this.setLevelFromResponseData).catch(error => {
@@ -80,6 +81,10 @@ var Level = React.createClass({
 
     getInitialState() {
         //console.log('getInitialState');
+        if(this.props.params.level == '29.pdf') {
+            window.location.href = '/resources/29.pdf';
+            return ;
+        }
         let levelUrl = this.props.params.level;
         APIService.getLevelByUrl(levelUrl, this.props.User.user.token).then(this.setLevelFromResponseData).catch(error => {
             console.log("Something went wrong while fetching level info from server" + error);
